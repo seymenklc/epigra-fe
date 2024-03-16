@@ -105,7 +105,7 @@ export default function Sessions() {
                                  {title}
                               </p>
                               <p className="text-sm text-gray-500 flex items-center gap-1">
-                                 {moment(formatFirebaseTimestamp(createdAt)).format('MMM DD, YYYY - hh:mm A')}
+                                 {moment(formatFirebaseTimestamp(createdAt)).format('MMM DD, YYYY')}
                               </p>
                            </div>
                            <div className="text-lg font-semibold">
