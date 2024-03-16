@@ -2,11 +2,11 @@
 import { useAuthContext } from "@/context/auth-context";
 import { auth } from "@/lib/firebase";
 import React from 'react'
-import { Burger, Button, Drawer, Menu, rem } from "@mantine/core";
+import { ActionIcon, Burger, Button, Drawer, Menu, rem } from "@mantine/core";
 import { signOut } from "firebase/auth";
 import Link from "next/link";
 import { PageRoutes } from "@/utils/enums";
-import { IconLogout } from "@tabler/icons-react";
+import { IconLogout, IconUser } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import { usePathname } from "next/navigation";
 
@@ -59,9 +59,9 @@ export default function Navbar() {
             {user && (
                <Menu shadow="md" width={200}>
                   <Menu.Target>
-                     <Button size="sm" variant="outline">
-                        Hello, {user.displayName}
-                     </Button>
+                     <ActionIcon variant="light" size={'xl'} radius={'xl'}>
+                        <IconUser />
+                     </ActionIcon>
                   </Menu.Target>
                   <Menu.Dropdown>
                      <Menu.Item
@@ -78,7 +78,7 @@ export default function Navbar() {
             position="bottom"
             opened={burgerMenuOpened}
             onClose={toggleBurgerMenu}
-            title={user ? `Hello, ${user.displayName}` : "⌛ Time Tracker"}
+            title={"⌛ Time Tracker"}
          >
             <div className="flex flex-col gap-4">
                {!user && (

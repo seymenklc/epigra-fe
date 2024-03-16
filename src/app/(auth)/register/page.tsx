@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation'
 import { type RegisterCredentials, RegisterSchema } from '@/lib/zod';
 import { auth } from '@/lib/firebase';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { updateProfile } from 'firebase/auth';
 import { notifications } from '@mantine/notifications';
 import React from 'react'
 import { FirebaseErrors, PageRoutes } from '@/utils/enums';
@@ -26,8 +25,6 @@ export default function AuthenticationForm(): React.JSX.Element {
 		const response = await createUserWithEmailAndPassword(data.email, data.password);
 
 		if (response && response.user) {
-			await updateProfile(response.user, { displayName: data.username })
-
 			resetForm()
 
 			notifications.show({
@@ -59,14 +56,6 @@ export default function AuthenticationForm(): React.JSX.Element {
 			<Divider labelPosition="center" my="lg" />
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<Stack>
-					<TextInput
-						{...register('username')}
-						radius="md"
-						label="Username"
-						type='text'
-						placeholder="Your username"
-						error={formErrors.username?.message}
-					/>
 					<TextInput
 						{...register('email')}
 						label="Email"
