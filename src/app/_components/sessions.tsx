@@ -7,7 +7,7 @@ import { collection, deleteDoc, doc, orderBy, query, updateDoc } from "firebase/
 import moment from "moment"
 import { useCollection } from "react-firebase-hooks/firestore"
 import React from 'react'
-import { ActionIcon, Tabs } from "@mantine/core"
+import { ActionIcon, Tabs, Tooltip } from "@mantine/core"
 import { IconArchive, IconTrash } from "@tabler/icons-react"
 
 enum TabType {
@@ -15,7 +15,7 @@ enum TabType {
    ArchivedSessions = 'archived-sessions'
 }
 
-export default function RecentSessions() {
+export default function Sessions() {
    const { user } = useAuthContext()
    const [currentTab, setCurrentTab] = React.useState<TabType>(TabType.RecentSessions)
 
@@ -88,12 +88,16 @@ export default function RecentSessions() {
                   return (
                      <div className="group flex gap-2" key={doc.id} >
                         <span className="hidden group-hover:flex flex-col justify-between py-1">
-                           <ActionIcon size={'lg'} onClick={() => handleArchiveSession(doc.id, isArchived)}>
-                              <IconArchive />
-                           </ActionIcon>
-                           <ActionIcon onClick={() => handleDeleteSession(doc.id)} color="red" size={'lg'}>
-                              <IconTrash />
-                           </ActionIcon>
+                           <Tooltip label={isArchived ? 'Unarchive' : 'Archive'} position="left">
+                              <ActionIcon size={'lg'} onClick={() => handleArchiveSession(doc.id, isArchived)}>
+                                 <IconArchive />
+                              </ActionIcon>
+                           </Tooltip>
+                           <Tooltip label='Delete' position="left">
+                              <ActionIcon onClick={() => handleDeleteSession(doc.id)} color="red" size={'lg'}>
+                                 <IconTrash />
+                              </ActionIcon>
+                           </Tooltip>
                         </span>
                         <div className="flex w-full justify-between items-center p-4 bg-white rounded-lg border border-gray-300">
                            <div className='gap-1 flex flex-col'>

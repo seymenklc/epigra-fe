@@ -6,6 +6,11 @@ import React from 'react'
 import BaseProvider from "./_components/providers/base-provider";
 import BaseLayout from "./_components/layouts/base-layout";
 import { ColorSchemeScript } from "@mantine/core";
+import { type Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Time Tracker App',
+}
 
 const roboto = Roboto({
   weight: "400",
