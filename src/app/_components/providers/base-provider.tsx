@@ -5,7 +5,7 @@ import { Notifications } from "@mantine/notifications";
 
 export default function BaseProvider({ children }: Readonly<React.PropsWithChildren>) {
    return (
-      <MantineProvider withGlobalClasses withCssVariables>
+      <MantineProvider withGlobalClasses withCssVariables defaultColorScheme="light">
          <AuthContextProvider>
             <Notifications />
             {children}

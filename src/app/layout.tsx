@@ -20,7 +20,7 @@ export default function RootLayout(props: Readonly<React.PropsWithChildren>) {
   return (
     <html lang="en">
       <head>
-        <ColorSchemeScript />
+        <ColorSchemeScript defaultColorScheme="light" />
       </head>
       <body className={`h-screen font-sans ${roboto.variable}`}>
         <div vaul-drawer-wrapper="">
