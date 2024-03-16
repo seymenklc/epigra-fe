@@ -76,6 +76,7 @@ export default function Timer() {
             if (createdDoc.id) {
                closeSaveSessionModal();
                handleResetTimer();
+               setSessionTitle('');
             }
          }
       } catch (error) {
