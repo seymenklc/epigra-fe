@@ -64,12 +64,12 @@ export default function Sessions() {
                      No sessions found
                   </div>
                )}
-               {!loading && currentTab === TabType.ArchivedSessions && snapshots?.docs.every(doc => !doc.data().isArchived) && (
+               {!loading && currentTab === TabType.ArchivedSessions && !snapshots?.empty && snapshots?.docs.every(doc => !doc.data().isArchived) && (
                   <div className="text-center text-lg">
                      No archived sessions found
                   </div>
                )}
-               {!loading && currentTab === TabType.RecentSessions && snapshots?.docs.every(doc => doc.data().isArchived) && (
+               {!loading && currentTab === TabType.RecentSessions && !snapshots?.empty && snapshots?.docs.every(doc => doc.data().isArchived) && (
                   <div className="text-center text-lg">
                      No recent sessions found
                   </div>
