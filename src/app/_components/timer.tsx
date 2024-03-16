@@ -55,6 +55,7 @@ export default function Timer() {
       if (checkAuth()) {
          closeSaveSessionModal();
          handleStartTimer();
+         setSessionTitle('');
       }
    }
 
@@ -143,7 +144,7 @@ export default function Timer() {
             centered
             size={'lg'}
             opened={isSaveSessionModalOpen}
-            onClose={closeSaveSessionModal}
+            onClose={handleCancel}
             title={<p className='text-2xl font-semibold'>Save Session</p>}
          >
             <form onSubmit={handleSaveSession} className='flex flex-col mt-5'>
