@@ -6,7 +6,7 @@ import { formatTime } from "@/utils";
 import { ActionIcon, Button, Group, Modal, Text, TextInput, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import { IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerStopFilled } from "@tabler/icons-react";
+import { IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerStopFilled, IconRepeat, IconRotateClockwise, IconZoomReset } from "@tabler/icons-react";
 import { addDoc, collection, doc, serverTimestamp } from "firebase/firestore";
 import { nanoid } from "nanoid";
 import React from "react"
@@ -47,12 +47,15 @@ export default function Timer() {
    const handleStop = () => {
       if (checkAuth() && time) {
          openSaveSessionModal()
+         handleStopTimer();
       }
    };
 
    const handleCancel = () => {
-      handleResetTimer();
-      closeSaveSessionModal();
+      if (checkAuth()) {
+         closeSaveSessionModal();
+         handleStartTimer();
+      }
    }
 
    const handleSaveSession = async (event: React.SyntheticEvent<HTMLFormElement>) => {
@@ -123,6 +126,15 @@ export default function Timer() {
                      disabled={isTimerActive && !time}
                   >
                      <IconPlayerStopFilled />
+                  </ActionIcon>
+               </Tooltip>
+               <Tooltip label='Reset'>
+                  <ActionIcon
+                     size={"xl"}
+                     color="orange"
+                     onClick={handleResetTimer}
+                  >
+                     <IconRotateClockwise />
                   </ActionIcon>
                </Tooltip>
             </div>
