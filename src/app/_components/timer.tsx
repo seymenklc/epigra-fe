@@ -6,13 +6,14 @@ import { formatTime } from "@/utils";
 import { ActionIcon, Button, Group, Modal, Text, TextInput, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import { IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerStopFilled, IconRepeat, IconRotateClockwise, IconZoomReset } from "@tabler/icons-react";
+import { IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerStopFilled, IconRotateClockwise } from "@tabler/icons-react";
 import { addDoc, collection, doc, serverTimestamp } from "firebase/firestore";
 import { nanoid } from "nanoid";
 import React from "react"
 
 export default function Timer() {
    const [sessionTitle, setSessionTitle] = React.useState('');
+   const [isSavingSession, setIsSavingSession] = React.useState(false)
 
    const { checkAuth, user } = useAuthContext();
 
@@ -46,6 +47,8 @@ export default function Timer() {
 
    const handleStop = () => {
       if (checkAuth() && time) {
+         setSessionTitle('')
+         setIsSavingSession(false)
          openSaveSessionModal()
          handleStopTimer();
       }
@@ -56,6 +59,7 @@ export default function Timer() {
          closeSaveSessionModal();
          handleStartTimer();
          setSessionTitle('');
+         setIsSavingSession(false);
       }
    }
 
@@ -63,19 +67,21 @@ export default function Timer() {
       event.preventDefault()
 
       try {
-         const payload = {
-            id: nanoid(),
-            time: time,
-            title: sessionTitle,
-            isArchived: false,
-            createdAt: serverTimestamp()
-         }
+         setIsSavingSession(true)
 
-         if (user?.uid) {
+         if (user && user.uid) {
+            const sessionPayload = {
+               id: nanoid(),
+               time: time,
+               title: sessionTitle,
+               isArchived: false,
+               createdAt: serverTimestamp()
+            }
+
             const parentDocRef = doc(db, 'time_sessions', user.uid);
             const subCollectionRef = collection(parentDocRef, 'sessions')
 
-            const createdDoc = await addDoc(subCollectionRef, payload)
+            const createdDoc = await addDoc(subCollectionRef, sessionPayload)
 
             if (createdDoc.id) {
                closeSaveSessionModal();
@@ -90,6 +96,8 @@ export default function Timer() {
             title: 'Error',
             message: 'An error occurred while saving your session. Please try again.',
          })
+      } finally {
+         setIsSavingSession(false)
       }
    }
 
@@ -171,6 +179,7 @@ export default function Timer() {
                   <Button
                      size='md'
                      type='submit'
+                     loading={isSavingSession}
                   >
                      Save
                   </Button>
