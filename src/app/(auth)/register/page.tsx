@@ -4,12 +4,12 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation'
 import { type RegisterCredentials, RegisterSchema } from '@/lib/zod';
-import { auth } from '@/lib/firebase-config';
+import { auth } from '@/lib/firebase';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { updateProfile } from 'firebase/auth';
 import { notifications } from '@mantine/notifications';
 import React from 'react'
-import { FirebaseErrors, PageRoutes } from '@/lib/enums';
+import { FirebaseErrors, PageRoutes } from '@/utils/enums';
 
 export default function AuthenticationForm(): React.JSX.Element {
 	const router = useRouter()
@@ -29,7 +29,6 @@ export default function AuthenticationForm(): React.JSX.Element {
 			await updateProfile(response.user, { displayName: data.username })
 
 			resetForm()
-			sessionStorage.setItem('user', JSON.stringify(response.user))
 
 			notifications.show({
 				color: 'green',

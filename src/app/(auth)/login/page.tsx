@@ -1,13 +1,13 @@
 "use client"
+import React from 'react'
+import { auth } from "@/lib/firebase"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { LoginSchema, type LoginCredentials } from "@/lib/zod"
-import { Anchor, Button, Group, Paper, PasswordInput, Stack, Text, TextInput } from "@mantine/core"
-import React from 'react'
-import { useRouter } from "next/navigation"
-import { PageRoutes } from "@/lib/enums"
+import { redirect, useRouter } from "next/navigation"
+import { PageRoutes } from "@/utils/enums"
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth"
-import { auth } from "@/lib/firebase-config"
+import { Anchor, Button, Divider, Group, Paper, PasswordInput, Stack, Text, TextInput } from "@mantine/core"
 
 export default function LoginPage(): React.JSX.Element {
 	const router = useRouter()
@@ -23,8 +23,8 @@ export default function LoginPage(): React.JSX.Element {
 		const response = await signInWithEmailAndPassword(data.email, data.password)
 
 		if (response && response.user) {
-			sessionStorage.setItem('user', JSON.stringify(response.user))
-			router.push(PageRoutes.Home)
+			try { redirect(PageRoutes.Home) }
+			catch (error) { }
 		}
 	}
 
@@ -33,6 +33,7 @@ export default function LoginPage(): React.JSX.Element {
 			<Text size="lg" fw={500}>
 				Welcome to Time Tracker
 			</Text>
+			<Divider labelPosition="center" my="lg" />
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<Stack>
 					<TextInput
