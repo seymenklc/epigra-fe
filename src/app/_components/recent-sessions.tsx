@@ -56,32 +56,26 @@ export default function RecentSessions() {
                </Tabs.Tab>
             </Tabs.List>
             <div className="grid gap-4 w-full mt-4">
+               {loading && [...Array(3)].map((_, index) => (
+                  <div key={index} className="animate-pulse bg-gray-200 rounded-lg p-12 h-5" />
+               ))}
                {!loading && snapshots?.empty && (
                   <div className="text-center text-lg">
                      No sessions found
                   </div>
                )}
-               {loading && [...Array(3)].map((_, index) => (
-                  <div key={index} className="animate-pulse bg-gray-200 rounded-lg p-12 h-5" />
-               ))}
-               {snapshots && !loading && !snapshots.empty && snapshots.docs.map(doc => {
+               {!loading && currentTab === TabType.ArchivedSessions && snapshots?.docs.every(doc => !doc.data().isArchived) && (
+                  <div className="text-center text-lg">
+                     No archived sessions found
+                  </div>
+               )}
+               {!loading && currentTab === TabType.RecentSessions && snapshots?.docs.every(doc => doc.data().isArchived) && (
+                  <div className="text-center text-lg">
+                     No recent sessions found
+                  </div>
+               )}
+               {!loading && !snapshots?.empty && snapshots?.docs.map(doc => {
                   const { time, title, createdAt, isArchived } = doc.data() as TimeSession
-
-                  if (currentTab === TabType.ArchivedSessions && snapshots.docs.every(doc => !doc.data().isArchived)) {
-                     return (
-                        <div className="text-center text-lg" key={doc.id}>
-                           No archived sessions found
-                        </div>
-                     )
-                  }
-
-                  if (currentTab === TabType.RecentSessions && snapshots.docs.every(doc => doc.data().isArchived)) {
-                     return (
-                        <div className="text-center text-lg" key={doc.id}>
-                           No recent sessions found
-                        </div>
-                     )
-                  }
 
                   if (currentTab === TabType.ArchivedSessions && !isArchived) {
                      return null
@@ -107,7 +101,7 @@ export default function RecentSessions() {
                                  {title}
                               </p>
                               <p className="text-sm text-gray-500 flex items-center gap-1">
-                                 {moment(formatFirebaseTimestamp(createdAt)).format('MMM DD, YYYY')}
+                                 {moment(formatFirebaseTimestamp(createdAt)).format('MMM DD, YYYY - hh:mm A')}
                               </p>
                            </div>
                            <div className="text-lg font-semibold">

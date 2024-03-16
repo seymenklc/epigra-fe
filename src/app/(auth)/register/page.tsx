@@ -26,15 +26,6 @@ export default function AuthenticationForm(): React.JSX.Element {
 
 		if (response && response.user) {
 			resetForm()
-
-			notifications.show({
-				color: 'green',
-				title: 'Success',
-				message: 'Account created successfully! Redirecting...',
-			})
-
-			// simulate a delay for the user to see the success message
-			setTimeout(() => router.push(PageRoutes.Home), 1000)
 		}
 	}
 

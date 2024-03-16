@@ -74,8 +74,8 @@ export default function Timer() {
             const createdDoc = await addDoc(subCollectionRef, payload)
 
             if (createdDoc.id) {
-               handleResetTimer();
                closeSaveSessionModal();
+               handleResetTimer();
             }
          }
       } catch (error) {
