@@ -1,3 +1,4 @@
+"use client"
 import "./globals.css";
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
@@ -6,6 +7,7 @@ import React from 'react'
 import BaseProvider from "./_components/providers/base-provider";
 import BaseLayout from "./_components/layouts/base-layout";
 import { ColorSchemeScript } from "@mantine/core";
+import { unstable_noStore } from "next/cache";
 
 const roboto = Roboto({
   weight: "400",
@@ -14,6 +16,7 @@ const roboto = Roboto({
 });
 
 export default function RootLayout(props: Readonly<React.PropsWithChildren>) {
+  unstable_noStore()
   return (
     <html lang="en">
       <head>
